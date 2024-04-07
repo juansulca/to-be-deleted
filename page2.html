@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fullscreen Mouse Drawing on Canvas</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Remove scrollbars */
+  }
+  canvas {
+    display: block; /* Remove scrollbars */
+    background: #fff; /* Optional: Canvas background */
+  }
+</style>
+</head>
+<body>
+
+<canvas id="drawingCanvas"></canvas>
+
+<script>
+  const canvas = document.getElementById('drawingCanvas');
+  const ctx = canvas.getContext('2d');
+  let isDrawing = false;
+  let lastX = 0;
+  let lastY = 0;
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas(); // Set initial canvas size to full window
+
+  canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true;
+    [lastX, lastY] = [e.clientX, e.clientY];
+  });
+
+  canvas.addEventListener('mousemove', (e) => {
+    if (isDrawing) {
+      drawLine(lastX, lastY, e.clientX, e.clientY);
+      [lastX, lastY] = [e.clientX, e.clientY];
+    }
+  });
+
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  canvas.addEventListener('mouseout', () => isDrawing = false);
+
+  function drawLine(x1, y1, x2, y2) {
+    ctx.beginPath();
+    ctx.strokeStyle = '#000'; // Line color
+    ctx.lineWidth = 2; // Line width
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    ctx.closePath();
+  }
+</script>
+
+</body>
+</html>

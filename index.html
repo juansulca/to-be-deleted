@@ -7,6 +7,59 @@
     <title>YOUR NAME GOES HERE!</title>
   </head>
   <body>
+      <div class="left">
+          <div class="icon">😎</div>
+          <div class="side-button">btn 1</div>
+          <div class="side-button">btn 2</div>
+          <div class="icon">👾</div>
+      </div>
+      <main class="container">
+        <div class="center">
+            <div>This is the content</div>
+            <canvas id="drawingCanvas"></canvas>
+        </div>
+      </main>
+      <div class="right">1</div>
     <script type="module" src="/main.js"></script>
+    <script>
+    const canvas = document.getElementById('drawingCanvas');
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    function resizeCanvas() {
+      canvas.width = 800;
+      canvas.height = 600;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas(); // Set initial canvas size to full window
+
+    canvas.addEventListener('mousedown', (e) => {
+      isDrawing = true;
+      [lastX, lastY] = [e.offsetX, e.offsetY];
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+      if (isDrawing) {
+        drawLine(lastX, lastY, e.offsetX, e.offsetY);
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+      }
+    });
+
+    canvas.addEventListener('mouseup', () => isDrawing = false);
+    canvas.addEventListener('mouseout', () => isDrawing = false);
+
+    function drawLine(x1, y1, x2, y2) {
+      ctx.beginPath();
+      ctx.strokeStyle = '#fff'; // Line color
+      ctx.lineWidth = 2; // Line width
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+      ctx.closePath();
+    }
+  </script>
   </body>
 </html>
